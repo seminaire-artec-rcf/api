@@ -1,5 +1,3 @@
-//TODO ADD ERROR HANDLING FOR IF THINGS ARE UNDEFINED OR IF THE PARAMETERS ARE WRONG
-
 /*
 API pour la base hybride créée pour l'atelier RCF-ARTEC février/2020
 C'est évidemment READ ONLY, donc très peu d'effort a été consacré à la sécurité
@@ -14,6 +12,8 @@ There's not any sophistocated error handling - something to add later
 
 require('dotenv').config();
 require('console');
+var moment = require('moment');
+
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -110,7 +110,8 @@ const getActorById = (request, response) => {
   const id = parseInt(request.params.id)
   pool.query("select * from comediens where id=$1", [id], (error, results) => {
     if (error) {
-      throw error
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     res = results.rows[0]? results.rows[0]: null
     response.status(200).json(res)
@@ -121,7 +122,8 @@ const getAuthorById = (request, response) => {
   const id = parseInt(request.params.id)
   pool.query("select * from auteurs where id=$1", [id], (error, results) => {
     if (error) {
-      throw error
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     res = results.rows[0]? results.rows[0]: null
     response.status(200).json(res)
@@ -132,7 +134,8 @@ const getPlayById = (request, response) => {
   const id = parseInt(request.params.id)
   pool.query("select * from pieces where id=$1", [id], (error, results) => {
     if (error) {
-      throw error
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     res = results.rows[0]? results.rows[0]: null
     response.status(200).json(res)
@@ -143,7 +146,8 @@ const getRegisterById = (request, response) => {
   const id = parseInt(request.params.id)
   pool.query("select * from registres where id=$1", [id], (error, results) => {
     if (error) {
-      throw error
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     res = results.rows[0]? results.rows[0]: null
     response.status(200).json(res)
@@ -154,7 +158,8 @@ const getRegisterPlayById = (request, response) => {
   const id = parseInt(request.params.id)
   pool.query("select * from pieces_registres where id=$1", [id], (error, results) => {
     if (error) {
-      throw error
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     res = results.rows[0]? results.rows[0]: null
     response.status(200).json(res)
@@ -165,7 +170,8 @@ const getImageById = (request, response) => {
   const id = parseInt(request.params.id)
   pool.query("select * from images_registres where id=$1", [id], (error, results) => {
     if (error) {
-      throw error
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     res = results.rows[0]? results.rows[0]: null
     response.status(200).json(res)
@@ -179,9 +185,14 @@ const getImageById = (request, response) => {
 //cherchez les détails d'un registre pour une date spécifique
 const getRegisterDetails = (request, response) => {
   const date = request.params.date
+  if(!moment(date, 'YYYY-MM-DD').isValid()) {
+      response.status(400).json("Erreur: requête malformée")
+      return
+  }
   pool.query("select * from registres where date=$1", [date], (error, results) => {
-    if (error) {
-      throw error
+    if (error || !results) {
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     res = results.rows[0]
     if(res) {
@@ -223,9 +234,14 @@ const getRegisterDetails = (request, response) => {
 const getPeriodRepertoire = (request, response) => {
   const debut = request.params.debut
   const fin = request.params.fin
+  if(!(moment(debut, 'YYYY-MM-DD').isValid() && moment(debut, 'YYYY-MM-DD').isValid()) ) {
+      response.status(400).json("Erreur: requête malformée")
+      return
+  }
   pool.query("select id_registre, id_piece, date, debut, reprise, ordre, gratuit, notes_lieu, notes_public, notes_representation from pieces_registres join registres on id_registre = registres.id where date >= $1 and date <= $2", [debut,fin], (error, results) => {
     if (error) {
-      throw error
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     instances = results.rows
     if(instances.length > 0) {
@@ -257,7 +273,8 @@ const getPlaysByAuthor = (request, response) => {
   const author_id = parseInt(request.params.auteur)
   pool.query("select * from pieces where $1 = any(id_auteur)", [author_id], (error, results) => {
     if (error) {
-      throw error
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     response.status(200).json(results.rows)
   })
@@ -269,7 +286,8 @@ const getDocumentsByAuthor = (request, response) => {
   const author_id = parseInt(request.params.auteur)
   pool.query("select * from documents_lagrange where id_auteur = $1", [author_id], (error, results) => {
     if (error) {
-      throw error
+      response.status(400).json("Erreur: requête malformée")
+      return
     }
     response.status(200).json(results.rows)
   })
