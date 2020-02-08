@@ -176,7 +176,7 @@ curl https://api-hybride.cfregisters.org/pieces
 
 ### **images**
 
-Les données viennent originalement des [registres des recettes journalières](https://www.cfregisters.org/fr/registres/registres-des-recettes) ; ces registres ont été numérisés pendant la phase I du projet.
+Les données viennent originalement des [registres des recettes journalières](https://www.cfregisters.org/fr/registres/registres-des-recettes) ; ces registres ont été numérisés pendant la phase I du projet et cette requête cherche les images.
 
 #### Exemple de requête
 
@@ -381,5 +381,283 @@ curl https://api-hybride.cfregisters.org/ventes
 
 Nous voulons souvent extraire une seule rangée d’un tableau - une seule instance. Les requêtes qui suivent permettent cela, mais requièrent que vous fournissez un paramètre: l'identifiant numérique propre à cette entrée.
 
+### *auteur*
+
+#### Exemple de requête
+
+```
+curl https://api-hybride.cfregisters.org/auteur/51
+
+```
+#### Exemple de réponse
+
+```
+{
+    "id": 51,
+    "prenom": "Pierre de",
+    "nom": "Marivaux",
+    "pseudonyme": "Marivaux (Pierre de)",
+    "naissance": 1688,
+    "mort": 1763,
+    "notes_bnf": "Auteur dramatique et romancier. - Membre de l'Académie française (1743)",
+    "pseudos_alternatifs": "M ** (1688-1763)/M. D *** (1688-1763)/M. de M ... (1688-1763)/Pierre Carlet de Chamblain de Marivaux (1688-1763)",
+    "liens_info": [
+        "http://data.bnf.fr/ark:/12148/cb119146220"
+    ],
+    "liens_icono": [
+        "http://commons.wikimedia.org/wiki/Special:FilePath/Marivaux.jpeg?width=300",
+        "http://gallica.bnf.fr/ark:/12148/bpt6k2065344.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/bpt6k206535h.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/bpt6k25796c.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/bpt6k298444w.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/bpt6k5488208n.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/bpt6k56539159.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/btv1b105090612.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/btv1b8409631g.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/btv1b8409632w.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/btv1b8422270k.thumbnail",
+        "http://gallica.bnf.fr/ark:/12148/btv1b84222710.thumbnail"
+    ],
+    "genre": "M"
+}
+
+```
+
+### *comedien*
+
+#### Exemple de requête
+
+```
+curl https://api-hybride.cfregisters.org/comedien/4
+
+```
+#### Exemple de réponse
+
+```
+{
+    "id": 4,
+    "pseudonyme": "Armand",
+    "numero_pseudo": 0,
+    "titre": "Monsieur",
+    "prenom": "François Armand",
+    "nom": "Huget (ou Haquet) ,dit",
+    "alias": null,
+    "statut": "S",
+    "entree": 1723,
+    "societariat": 1724,
+    "depart": 1765,
+    "debut": [],
+    "dates": "1723-1724-1765",
+    "notes": null
+}
+
+```
+
+### *pièce*
+
+#### Exemple de requête
+
+```
+curl https://api-hybride.cfregisters.org/piece/5155
+
+```
+#### Exemple de réponse
+
+```
+{
+    "id": 5155,
+    "id_auteur": [
+        2
+    ],
+    "titre": "Médecin malgré lui (Le) / Le Médecin forcé (titre alt.)",
+    "genre": "comédie",
+    "actes": 3,
+    "prose_vers": "prose",
+    "prologue": false,
+    "musique_danse_machine": true,
+    "titre_alternatif": null,
+    "date_de_creation": null
+}
+
+```
+Oui, c'est vrai que ici le titre alternatif n'est pas du tout au bon endroit - les données ne sont malheureusement pas complètement systématiques...
+
+### *image*
+
+#### Exemple de requête
+
+```
+curl https://api-hybride.cfregisters.org/image/51451
+
+```
+#### Exemple de réponse
+
+```
+{
+    "id": 51451,
+    "id_registre": 24782,
+    "url": "http://images.cfregisters.org/M119_02_R90/M119_02_R90_026v.jpg",
+    "orientation": "verso"
+}
+
+```
+
+### *registre*
+
+#### Exemple de requête
+
+```
+curl https://api-hybride.cfregisters.org/registre/27649
+
+```
+#### Exemple de réponse
+
+```
+{
+    "id": 27649,
+    "date": "1725-09-01T07:00:00.000Z",
+    "jour": "Samedi",
+    "saison": "1725-1726",
+    "recettes": 897,
+    "semainier": "Lavoy",
+    "notes": "On a donné relâche au théâtre pendant deux jours",
+    "ouverture": false,
+    "cloture": false,
+    "page_de_gauche": null
+}
+
+```
+
+### *piece-registre*
+
+#### Exemple de requête
+
+```
+curl https://api-hybride.cfregisters.org/piece-registre/40506
+
+```
+#### Exemple de réponse
+
+```
+{
+    "id": 40506,
+    "id_registre": 27205,
+    "id_piece": 5127,
+    "debut": false,
+    "reprise": false,
+    "ordre": 1,
+    "gratuit": false,
+    "notes_public": "L'ambassadeur du Grand Seigneur",
+    "notes_lieu": null,
+    "notes_representation": null
+}
+
+```
+
+## La recherche par collection
+
+Nous voulons souvent trouver tous les entrées qui partagent un attribue. Pendant que nous pouvons accomplir cela en filtrant les exemples après avoir tout cherché, il est parfois utile de limiter la recherche au niveau de l'api. Les voies qui suivent font cela pour deux cas d'utilisage courant. Comme celles de la catégorie précédente, ces requêtes demandant aussi des paramètres.
+
+### *oeuvres*
+
+Cette requête cherche toutes les pièces écrites par un auteur dont on spécifie l'identité
+
+#### Exemple de requête
+
+```
+curl https://api-hybride.cfregisters.org/oeuvres/262
+
+```
+#### Exemple de réponse
+
+```
+[
+    {
+        "id": 5499,
+        "id_auteur": [
+            262
+        ],
+        "titre": "Cléarque, tyran d'Héraclée",
+        "genre": "tragédie",
+        "actes": 5,
+        "prose_vers": "vers",
+        "prologue": false,
+        "musique_danse_machine": false,
+        "titre_alternatif": null,
+        "date_de_creation": "1717-11-26T08:00:00.000Z"
+    },
+    {
+        "id": 5524,
+        "id_auteur": [
+            262
+        ],
+        "titre": "Habis",
+        "genre": "tragédie",
+        "actes": 5,
+        "prose_vers": "vers",
+        "prologue": false,
+        "musique_danse_machine": false,
+        "titre_alternatif": null,
+        "date_de_creation": "1714-04-17T07:00:00.000Z"
+    },
+    {
+        "id": 5839,
+        "id_auteur": [
+            262
+        ],
+        "titre": "Sémiramis",
+        "genre": "tragédie",
+        "actes": 5,
+        "prose_vers": "vers",
+        "prologue": false,
+        "musique_danse_machine": false,
+        "titre_alternatif": null,
+        "date_de_creation": "1716-02-01T08:00:00.000Z"
+    }
+]
+
+
+```
+
+### documents
+
+Cette requête cherche tous les documents de la base Lagrange liés à un auteur dont on spécifie l'identité
+
+#### Exemple de requête
+
+```
+https://api-hybride.cfregisters.org/documents/2
+
+```
+
+
+#### Exemple de réponse
+
+```
+[
+    {
+        "id": "BIB00039162",
+        "type": "Archive",
+        "titre": "Sganarelle",
+        "titre_alternatif": "ou Le Cocu imaginaire",
+        "soustitre": "comédie en un acte et en vers",
+        "url": "http://lagrange.comedie-francaise.fr/notice?ref=BIB00039162&id=555&p=1",
+        "id_auteur": 2
+    },
+    {
+        "id": "BIB00039329",
+        "type": "Archive",
+        "titre": "Paroles de théâtre",
+        "titre_alternatif": "Molière-Jouvet",
+        "soustitre": "lecture-spectacle",
+        "url": "http://lagrange.comedie-francaise.fr/notice?ref=BIB00039329&id=555&p=1",
+        "id_auteur": 2
+    },
+  
+  ... ]
+
+```
+
+## Les requêtes ciblés
 
 
