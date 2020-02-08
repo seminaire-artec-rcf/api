@@ -91,7 +91,7 @@ const getRegisterPlays = (request, response) => {
 }
 
 const getTicketSales = (request, response) => {
-  pool.query('select * from ventes order by id', (error, results) => {
+  pool.query('select * from ventes', (error, results) => {
     if (error) {
       throw error
     }
