@@ -9,7 +9,7 @@ Nous proposons également un API pour cette nouvelle ressource, dont les détail
 
 ## Les requêtes générales
 
-Ne donnant accès qu'a un échantillon de nos données, cet API diffère un peu de la norme en ce qu’il vous permet de assez facilement comprendre le schéma de la base. Les requêtes qui suivent vous permettent de récupérer toutes les rangées de chacun de ses huit tableaux.
+Ne donnant accès qu'a un échantillon de nos données, cet API diffère un peu de la norme en ce qu’il vous permet à assez facilement comprendre le schéma de la base. Les requêtes qui suivent vous donnent accès à toutes les rangées de chacun de ses huit tableaux.
 
 ### *auteurs*
 
@@ -619,7 +619,7 @@ curl https://api-hybride.cfregisters.org/oeuvres/262
 
 ```
 
-### documents
+### *documents*
 
 Cette requête cherche tous les documents de la base Lagrange liés à un auteur dont on spécifie l'identité
 
@@ -660,4 +660,230 @@ https://api-hybride.cfregisters.org/documents/2
 
 ## Les requêtes ciblés
 
+Similaires à celles dans la section précédente, ces requêtes se concernent avec des cas d'utilisage communs. Pourtant, dans l'arrière plan, elles sont un peu plus complexes, car elles tirent des informations de plusieurs tableaux.
 
+### *repertoire*
+
+Cette requête demande deux paramètres - des dates de début et de fin - pour préciser une période. Elle retourne une liste (sans répétitions) de pièces qui ont été joués pendant cette période. Emboîté dans chaque pièce dans la liste, il se trouve la liste de représentations individuelles.
+
+#### Exemple de requête
+
+```
+curl https://api-hybride.cfregisters.org/repertoire/1730-01-01&1730-01-15
+
+```
+#### Exemple de réponse
+
+```
+[
+    {
+        "id": 1350,
+        "id_auteur": [
+            21
+        ],
+        "titre": "Esprit de contradiction (L')",
+        "genre": "comédie",
+        "actes": 1,
+        "prose_vers": "prose",
+        "prologue": false,
+        "musique_danse_machine": false,
+        "titre_alternatif": null,
+        "date_de_creation": "1700-08-27T07:00:00.000Z",
+        "representations": [
+            {
+                "id_registre": 28045,
+                "id_piece": 1350,
+                "date": "1730-01-04T08:00:00.000Z",
+                "debut": false,
+                "reprise": false,
+                "ordre": 2,
+                "gratuit": false,
+                "notes_lieu": null,
+                "notes_public": null,
+                "notes_representation": null
+            },
+            {
+                "id_registre": 28043,
+                "id_piece": 1350,
+                "date": "1730-01-02T08:00:00.000Z",
+                "debut": false,
+                "reprise": false,
+                "ordre": 2,
+                "gratuit": false,
+                "notes_lieu": null,
+                "notes_public": null,
+                "notes_representation": null
+            }
+        ]
+    },
+    {
+        "id": 4875,
+        "id_auteur": [
+            21
+        ],
+        "titre": "Attendez-moi sous l’orme",
+        "genre": "comédie",
+        "actes": 1,
+        "prose_vers": "prose",
+        "prologue": false,
+        "musique_danse_machine": true,
+        "titre_alternatif": null,
+        "date_de_creation": "1694-05-19T07:00:00.000Z",
+        "representations": [
+            {
+                "id_registre": 28046,
+                "id_piece": 4875,
+                "date": "1730-01-05T08:00:00.000Z",
+                "debut": false,
+                "reprise": false,
+                "ordre": 2,
+                "gratuit": false,
+                "notes_lieu": null,
+                "notes_public": null,
+                "notes_representation": null
+            }
+        ]
+    },
+    
+    ... ]
+    
+```
+
+### *séance*
+
+Donne tout simplement autant de détails que possible pour une seule séance - autrement dit, pour une date particulière.
+
+#### Exemple de requête
+
+```
+https://api-hybride.cfregisters.org/seance/1730-01-25
+
+```
+
+#### Exemple de réponse
+
+```
+{
+    "id": 28062,
+    "date": "1730-01-25T08:00:00.000Z",
+    "jour": "Mercredi",
+    "saison": "1729-1730",
+    "recettes": 376,
+    "semainier": "Grandval",
+    "notes": "On a donné hier relâche au Théâtre à cause du feu des ambassadeurs.",
+    "ouverture": false,
+    "cloture": false,
+    "page_de_gauche": null,
+    "images": [
+        {
+            "id": 58011,
+            "id_registre": 28062,
+            "url": "http://images.cfregisters.org/M119_02_R92/M119_02_R92_454v.jpg",
+            "orientation": "verso"
+        },
+        {
+            "id": 58010,
+            "id_registre": 28062,
+            "url": "http://images.cfregisters.org/M119_02_R92/M119_02_R92_453r.jpg",
+            "orientation": "recto"
+        },
+        {
+            "id": 106511,
+            "id_registre": 28062,
+            "url": "http://images.cfregisters.org/M119_02_R92/M119_02_R92_452v.jpg",
+            "orientation": "gauche"
+        }
+    ],
+    "pieces": [
+        {
+            "id": 4958,
+            "id_registre": 28062,
+            "id_piece": 4958,
+            "debut": false,
+            "reprise": false,
+            "ordre": 1,
+            "gratuit": false,
+            "notes_public": null,
+            "notes_lieu": null,
+            "notes_representation": null,
+            "id_auteur": [
+                83
+            ],
+            "titre": "Jodelet, ou le Maître valet",
+            "genre": "comédie",
+            "actes": 5,
+            "prose_vers": "vers",
+            "prologue": false,
+            "musique_danse_machine": false,
+            "titre_alternatif": null,
+            "date_de_creation": null
+        },
+        {
+            "id": 5309,
+            "id_registre": 28062,
+            "id_piece": 5309,
+            "debut": false,
+            "reprise": false,
+            "ordre": 2,
+            "gratuit": false,
+            "notes_public": null,
+            "notes_lieu": null,
+            "notes_representation": null,
+            "id_auteur": [
+                14
+            ],
+            "titre": "Vacances (Les) / Les Vacances des procureurs (titre alt.)",
+            "genre": "comédie",
+            "actes": 1,
+            "prose_vers": "prose",
+            "prologue": false,
+            "musique_danse_machine": true,
+            "titre_alternatif": null,
+            "date_de_creation": "1696-10-31T07:00:00.000Z"
+        }
+    ],
+    "ventes": [
+        {
+            "id_registre": 28062,
+            "id_place": 87,
+            "description": "Billet à",
+            "loge": false,
+            "billets_vendus": 5,
+            "prix_par_billet": 201,
+            "recettes": 207
+        },
+        {
+            "id_registre": 28062,
+            "id_place": 88,
+            "description": "Billet à",
+            "loge": false,
+            "billets_vendus": 109,
+            "prix_par_billet": 1,
+            "recettes": 109
+        },
+        {
+            "id_registre": 28062,
+            "id_place": 85,
+            "description": "Billet à",
+            "loge": false,
+            "billets_vendus": 4,
+            "prix_par_billet": 4,
+            "recettes": 16
+        },
+        {
+            "id_registre": 28062,
+            "id_place": 86,
+            "description": "Billet à",
+            "loge": false,
+            "billets_vendus": 22,
+            "prix_par_billet": 2,
+            "recettes": 44
+        }
+    ]
+}
+
+```
+
+## À vous de jouer!
+
+L'API décris ci-dessus est très minimale - nous vous encourageons d'y contribuer lors de la création des outils numériques pour qu'il convienne mieux à vos besoins.
